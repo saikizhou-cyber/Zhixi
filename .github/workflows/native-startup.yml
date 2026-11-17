@@ -1,0 +1,44 @@
+name: Zhixi iPhone startup check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  startup:
+    if: github.event.repository.private == false
+    runs-on: xcode-27
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+        working-directory: body-status
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Build and launch the bundled iPhone app
+        run: |
+          mkdir -p artifacts
+          xcodebuild -project BodyStatus.xcodeproj -scheme BodyStatus -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' -derivedDataPath .build/startup \
+            CODE_SIGNING_ALLOWED=NO build > artifacts/startup-build.log 2>&1
+          xcrun simctl list devices available --json > artifacts/simulators.json
+          device_id=$(python3 -c 'import json; d=json.load(open("artifacts/simulators.json")); print(next(v["udid"] for k,vs in d["devices"].items() if "iOS" in k for v in vs if v["name"].startswith("iPhone")))')
+          xcrun simctl bootstatus "$device_id" -b
+          xcrun simctl install "$device_id" .build/startup/Build/Products/Debug-iphonesimulator/BodyStatus.app
+          xcrun simctl launch "$device_id" com.example.body-status
+          sleep 8
+          xcrun simctl io "$device_id" screenshot artifacts/iphone-startup.png
+          xcrun simctl spawn "$device_id" log show --last 2m --style compact --predicate 'process == "BodyStatus"' > artifacts/app-startup.log
+          xcrun simctl shutdown "$device_id"
+      - name: Save launch evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: zhixi-startup-${{ github.run_id }}
+          path: body-status/artifacts/
+          retention-days: 1
+          if-no-files-found: warn
