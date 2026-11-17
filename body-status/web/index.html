@@ -1,0 +1,25 @@
+<!doctype html>
+<!-- 变体：yellow / neutral / standard / plain / standard / calm。
+     主视觉：最近 HRV 与个人区间；固定 App 顶栏/四项底栏，内容独立滚动。 -->
+<html lang="zh-CN" data-theme="light" data-ef-accent="yellow" data-ef-paper="neutral" data-ef-cut="standard" data-ef-ground="plain" data-ef-density="standard" data-ef-motion="calm">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#161616">
+    <meta name="description" content="知息，在自己的设备上理解身体的变化。导入健康数据，查看趋势、睡眠与日常记录。">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="icon" href="./icon.svg" type="image/svg+xml">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="stylesheet" href="./assets/endfield.css">
+    <link rel="stylesheet" href="./styles.css">
+    <title>知息 / 身体状态记录</title>
+  </head>
+  <body class="ef">
+    <a class="skip-link" href="#main">跳转到内容</a>
+    <div id="app"><main class="loading"><img src="./icon.svg" alt="" width="56" height="56"><h1>知息</h1><p>正在打开你的身体日记…</p></main></div>
+    <input type="file" id="health-file" accept=".xml,.zip,.json" hidden>
+    <noscript>知息需要 JavaScript 才能在本地解析健康数据。请在浏览器中启用 JavaScript。</noscript>
+    <script type="module" src="./app.mjs"></script>
+  </body>
+</html>

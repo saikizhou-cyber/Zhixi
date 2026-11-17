@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>知息 IndexedDB 存储验证</title>
+  <style>
+    body { max-width: 850px; margin: 48px auto; padding: 0 24px; font: 16px/1.7 system-ui, sans-serif; color: #203b33; background: #f4f8f5; }
+    h1 { font-size: 26px; }
+    li { margin: 12px 0; padding: 12px; border-radius: 8px; background: white; white-space: pre-wrap; overflow-wrap: anywhere; }
+    [data-status="pass"] { border-left: 5px solid #23805d; }
+    [data-status="fail"] { border-left: 5px solid #b43e3e; color: #8c2424; }
+    #summary { font-weight: 700; }
+    code { font-size: 0.9em; }
+  </style>
+</head>
+<body>
+  <h1>IndexedDB 真实浏览器测试</h1>
+  <p>每项测试只使用随机命名的 <code>zhixi-test-*</code> 临时数据库，结束后清理。不会打开或修改 <code>zhixi-health</code>。</p>
+  <p id="summary" role="status">正在运行…</p>
+  <ol id="results"></ol>
+  <script type="module" src="./storage-browser.mjs"></script>
+</body>
+</html>
